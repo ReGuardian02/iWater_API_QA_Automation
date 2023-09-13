@@ -1,4 +1,5 @@
 ### main template
+### main template
 __pycache__
 *.py[cod]
 *$py.class
@@ -63,9 +64,8 @@ __pypackages__/
 .env
 .venv
 env/
-venv\
+venv/
 ENV/
-venv
 
 # If you are using PyCharm #
 .idea/**/workspace.xml
