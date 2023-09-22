@@ -1,15 +1,20 @@
 import os
 from sqlalchemy import create_engine
+from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker
-import dotenv
+from dotenv import load_dotenv
 
-dotenv.load_dotenv()
-PG_SQLALCHEMY_DATABASE_URL = f"postgresql+psycopg2://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:5432/{os.getenv('DB_NAME')}"
+load_dotenv()
 
-pg_engine = create_engine(PG_SQLALCHEMY_DATABASE_URL)
+CLIENTS_SERVICE_DEV_URL = URL.create(
+    drivername="postgresql+psycopg2",
+    username=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    host=os.getenv("DB_HOST"),
+    database=os.getenv("DB_NAME")
+)
 
-PgSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=pg_engine)
+pg_engine = create_engine(CLIENTS_SERVICE_DEV_URL)
 
-
-session = PgSessionLocal()
-session.commit = session.flush
+Session = sessionmaker(autocommit=False, autoflush=False, bind=pg_engine)
+session = Session()
