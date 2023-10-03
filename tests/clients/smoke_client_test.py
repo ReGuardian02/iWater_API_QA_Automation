@@ -2,6 +2,7 @@ import os
 import pytest
 import requests
 import dotenv
+from tests.clients.requests_test_methods import ClientInfoMethods
 
 dotenv.load_dotenv()
 
@@ -20,12 +21,18 @@ class TestMain:
                     "status": True
                 }), "Wrong answer"
 
-    def test_client_info(self, temp_db):
-        full_url = os.getenv("GATEWAY_URL") + os.getenv("CLIENT_INFO_PATH")
+    # @pytest.mark.debug
+    def test_client_info_positive(self, temp_db):
+        full_url = os.getenv("CLIENT_SERVICE_TEST_URL") + os.getenv("CLIENT_INFO_PATH")
         full_auth = "Bearer " + temp_db.get("new_client_token")
+        print(full_auth)
         headers = {"Authorization": full_auth}
         response = requests.get(url=full_url, headers=headers)
         response_body = response.json()
-        print("\n---------------------------------------------------------")
-        print(response_body)
-        assert response.status_code == 200
+        ClientInfoMethods.client_info_asserting(response=response_body, db_values=temp_db.get("db_client_data"))
+
+
+        # response_body = response.json()
+        # print("\n---------------------------------------------------------")
+        # print(response_body)
+        # assert response.status_code == 200

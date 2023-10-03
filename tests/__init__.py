@@ -14,7 +14,7 @@ CLIENTS_SERVICE_DEV_URL = URL.create(
     database=os.getenv("DB_NAME")
 )
 
-pg_engine = create_engine(CLIENTS_SERVICE_DEV_URL)
+clients_dev_engine = create_engine(CLIENTS_SERVICE_DEV_URL)
 
-Session = sessionmaker(autocommit=False, autoflush=False, bind=pg_engine)
-session = Session()
+ClientsSession = sessionmaker(autocommit=False, autoflush=False, bind=clients_dev_engine)
+clients_session = ClientsSession()
