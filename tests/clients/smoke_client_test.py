@@ -9,9 +9,9 @@ dotenv.load_dotenv()
 
 @pytest.mark.usefixtures('temp_db')
 class TestMain:
-    @pytest.mark.debug
+    # @pytest.mark.debug
     def test_starter_eligible_true(self, temp_db):
-        full_url = os.getenv("GATEWAY_URL") + os.getenv("STARTER_ELIGIBLE_PATH")
+        full_url = os.getenv("CLIENT_SERVICE_TEST_URL") + os.getenv("STARTER_ELIGIBLE_PATH")
         full_auth = "Bearer " + temp_db.get("new_client_token")
         headers = {"Authorization": full_auth}
         response = requests.get(url=full_url, headers=headers)
@@ -21,7 +21,7 @@ class TestMain:
                     "status": True
                 }), "Wrong answer"
 
-    # @pytest.mark.debug
+    @pytest.mark.debug
     def test_client_info_positive(self, temp_db):
         full_url = os.getenv("CLIENT_SERVICE_TEST_URL") + os.getenv("CLIENT_INFO_PATH")
         full_auth = "Bearer " + temp_db.get("new_client_token")

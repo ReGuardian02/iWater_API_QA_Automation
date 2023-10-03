@@ -93,9 +93,9 @@ def temp_db():
 
     yield fixture_dict
     print("\nEnding of tests")
-    # new_id_client = clients_session.query(Client).filter(Client.id == new_client_id).first()
-    # clients_session.delete(new_id_client)
-    # clients_session.commit()
+    new_id_client = clients_session.query(Client).filter(Client.id == new_client_id).first()
+    clients_session.delete(new_id_client)
+    clients_session.commit()
     clients_session.close()
 
 
