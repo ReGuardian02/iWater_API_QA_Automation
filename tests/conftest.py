@@ -1,12 +1,10 @@
 import os
 import jwt
 import pytest
-from sqlalchemy import delete
 from tests import clients_session
 from database.postgres_schemas import Address, Client
 from faker import Faker
 from faker.providers import DynamicProvider
-from sqlalchemy import insert
 from dotenv import load_dotenv
 
 load_dotenv()
