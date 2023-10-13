@@ -12,7 +12,7 @@ dotenv.load_dotenv()
 @pytest.mark.usefixtures('temp_db')
 class TestClients:
 
-    @pytest.mark.skip
+    # @pytest.mark.skip
     def test_starter_eligible_true(self, temp_db):
         full_url = os.getenv("CLIENT_API_ORDERS_URL") + os.getenv("STARTER_ELIGIBLE_PATH")
         full_auth = "Bearer " + temp_db.get("new_client_token")
@@ -21,7 +21,7 @@ class TestClients:
         print("\n", response.json())
         assert response.json() == {"status": True}, "Wrong answer"
 
-    @pytest.mark.skip
+    # @pytest.mark.skip
     def test_client_info_positive(self, temp_db):
         full_url = os.getenv("CLIENT_API_CLIENTS_URL") + os.getenv("CLIENT_INFO_PATH")
         full_auth = "Bearer " + temp_db.get("new_client_token")
@@ -31,7 +31,7 @@ class TestClients:
         response_body = response.json()
         methods.client_info_asserting(response=response_body, db_values=temp_db.get("db_client_data"))
 
-    @pytest.mark.skip
+    # @pytest.mark.skip
     def test_client_info_negative(self, temp_db):
         full_url = os.getenv("CLIENT_API_CLIENTS_URL") + os.getenv("CLIENT_INFO_PATH")
         full_auth = "Bearer " + jwt_gen("definitely_wrong_client_id")
@@ -42,7 +42,7 @@ class TestClients:
         assert response.status_code == 401, "ERROR | Wrong status code"
         assert response.json() == {'detail': 'Unauthorized'}
 
-    @pytest.mark.skip
+    # @pytest.mark.skip
     def test_favourite_list_positive(self, temp_db):
         new_client_token = temp_db.get("new_client_token")
         random_product_id = methods.get_random_product_id()
