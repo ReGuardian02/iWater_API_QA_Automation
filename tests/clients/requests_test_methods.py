@@ -72,3 +72,15 @@ def delete_fav_product(client_token: str, product_id: int):
     response = requests.delete(url=url, headers=headers, json=body)
 
     return response
+
+
+def mailing_consent_change(client_token: str, state: bool):
+    headers = headers_maker(client_token)
+    url = os.getenv("CLIENT_API_CLIENTS_URL") + os.getenv("MAILING_CONSENT")
+    body = {
+        "mailing_consent": state
+    }
+
+    response = requests.put(url=url, headers=headers, json=body)
+
+    return response

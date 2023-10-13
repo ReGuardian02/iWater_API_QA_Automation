@@ -12,7 +12,7 @@ dotenv.load_dotenv()
 @pytest.mark.usefixtures('temp_db')
 class TestClients:
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     def test_starter_eligible_true(self, temp_db):
         full_url = os.getenv("CLIENT_API_ORDERS_URL") + os.getenv("STARTER_ELIGIBLE_PATH")
         full_auth = "Bearer " + temp_db.get("new_client_token")
@@ -21,7 +21,7 @@ class TestClients:
         print("\n", response.json())
         assert response.json() == {"status": True}, "Wrong answer"
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     def test_client_info_positive(self, temp_db):
         full_url = os.getenv("CLIENT_API_CLIENTS_URL") + os.getenv("CLIENT_INFO_PATH")
         full_auth = "Bearer " + temp_db.get("new_client_token")
@@ -31,7 +31,7 @@ class TestClients:
         response_body = response.json()
         methods.client_info_asserting(response=response_body, db_values=temp_db.get("db_client_data"))
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     def test_client_info_negative(self, temp_db):
         full_url = os.getenv("CLIENT_API_CLIENTS_URL") + os.getenv("CLIENT_INFO_PATH")
         full_auth = "Bearer " + jwt_gen("definitely_wrong_client_id")
@@ -42,7 +42,7 @@ class TestClients:
         assert response.status_code == 401, "ERROR | Wrong status code"
         assert response.json() == {'detail': 'Unauthorized'}
 
-    # @pytest.mark.skip
+    @pytest.mark.skip
     def test_favourite_list_positive(self, temp_db):
         new_client_token = temp_db.get("new_client_token")
         random_product_id = methods.get_random_product_id()
@@ -77,3 +77,14 @@ class TestClients:
 
         assert last_get_response.status_code == 200, "ERROR | Wrong status code while getting empty product list after deleting"
         assert last_get_response.json() == {"favorites_list": []}, "ERROR | Wrong empty product list message after deleting"
+
+    def test_mailing_consent_changing_positive(self, temp_db):
+        new_client_token = temp_db.get("new_client_token")
+        change_to_false_resp = methods.mailing_consent_change(new_client_token, False)
+
+        assert change_to_false_resp.status_code == 200, "ERROR | Wrong status code while changing MC to False"
+        assert change_to_false_resp.json().get("mailing_consent") == False, "ERROR | Mailing consent wasn't changed"
+
+        change_to_true_resp = methods.mailing_consent_change(new_client_token, True)
+        assert change_to_true_resp.status_code == 200, "ERROR | Wrong status code while changing MC to True"
+        assert change_to_true_resp.json().get("mailing_consent") == True, "ERROR | Mailing consent wasn't changed"
